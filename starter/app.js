@@ -10,14 +10,14 @@ GAME RULES:
 */
 
 /*NEW FEATURES 
-1. A player loses their ENTIRE score when he rolls two 6's in a row. After that, it's the next player's turn. (HINT: Always save the previous dice roll in a seperate varaible)
-2. Add an input field to the HTML where players can set what the winning score will be. (HINT: you can read that value with teh .value property in js.)
+2. Add an input field to the HTML where players can set what the winning score will be. (HINT: you can read that value with the .value property in js.)
 3. Add another dice to the game, so that there are two dices now. The player looses his current score when one of them is 1. (HINT: you will need CSS to position the second dice, so take a look at the CSS code for the first one.)
 */
 
 
 let scores, roundScore, activePlayer, isGameRunning, prevRoll;
 const players = [0, 1];
+let winningScore = document.getElementById('score').value;
 
 // init diceDOM selector
 const diceDOM = document.querySelector('.dice');
@@ -27,8 +27,7 @@ init();
 document.querySelector('.btn-roll').addEventListener('click', function() {
   if (isGameRunning) {
     // Random Number
-    // let dice = Math.floor(Math.random() * 6) + 1;
-    let dice = 6;
+    let dice = Math.floor(Math.random() * 6) + 1;
 
     // Display Result
     diceDOM.style.display = 'block';
@@ -64,7 +63,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
     // Update the UI
     document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
     // Check if player won the game!
-    if (scores[activePlayer] >= 10) {
+    if (scores[activePlayer] >= winningScore) {
       // player won the game
       diceDOM.style.display = "none";
       document.querySelector('#name-' + activePlayer).textContent = "Winner!";
