@@ -28,10 +28,9 @@ init();
 document.querySelector('.btn-roll').addEventListener('click', function() {
   if (isGameRunning) {
     // Random Number for both dice
-    // let diceTop = Math.floor(Math.random() * 6) + 1;
-    // let diceBottom = Math.floor(Math.random() * 6) + 1;
-    let diceTop = 1;
-    let diceBottom = 6;
+    let diceTop = Math.floor(Math.random() * 6) + 1;
+    let diceBottom = Math.floor(Math.random() * 6) + 1;
+    
     console.log(diceTop, diceBottom);
     // Display Result for both dice
     diceTopDOM.style.display = 'block';
@@ -39,8 +38,15 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
     diceBottomDOM.style.display = 'block';
     diceBottomDOM.src = 'dice-' + diceBottom + '.png';
     // Update the round score IF the rolled number was NOT 1
-
-    if (prevRollTop === 6 || prevRollBottom === 6) {
+    if ((diceTop !== 1 && diceBottom !== 1) && (prevRollTop !== 6 && prevRollBottom !== 6)) {
+      //add to current score
+      roundScore += diceTop + diceBottom;
+      document.querySelector('#current-' + activePlayer).textContent = roundScore;
+      //change prevScore to current dice
+      prevRollTop = diceTop;
+      prevRollBottom = diceBottom;
+      console.log('prevTop: ' + prevRollTop + 'diceTop: ' + diceTop + 'prevBot: ' + prevRollTop + 'diceBot: ' + diceBottom);
+    } else if (prevRollTop === 6 || prevRollBottom === 6) {
       // check if dice equals prevRoll
       if (diceTop === prevRollTop || diceBottom === prevRollBottom) {
         scores[activePlayer] = 0;
@@ -51,14 +57,6 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         prevRollBottom = diceBottom;
         console.log('prevTop: ' + prevRollTop + 'diceTop: ' + diceTop + 'prevBot: ' + prevRollTop + 'diceBot: ' + diceBottom);
       }
-    } else if (diceTop !== 1 && diceBottom !== 1) {
-      //add to current score
-      roundScore += diceTop + diceBottom;
-      document.querySelector('#current-' + activePlayer).textContent = roundScore;
-      //change prevScore to current dice
-      prevRollTop = diceTop;
-      prevRollBottom = diceBottom;
-      console.log('prevTop: ' + prevRollTop + 'diceTop: ' + diceTop + 'prevBot: ' + prevRollTop + 'diceBot: ' + diceBottom);
     } else {
       //Next Player
       nextPlayer();
