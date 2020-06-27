@@ -5,7 +5,7 @@ GAME RULES:
 - In each turn, a player rolls a dice as many times as he whishes. Each result get added to his ROUND score
 - BUT, if the player rolls a 1, all his ROUND score gets lost. After that, it's the next player's turn
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
-- The first player to reach 100 points on GLOBAL score wins the game
+- The first player to reach the set points on GLOBAL score wins the game
 
 */
 
@@ -18,7 +18,7 @@ GAME RULES:
 let scores, roundScore, activePlayer, isGameRunning, prevRollTop, prevRollBottom;
 const players = [0, 1];
 let winningScore = document.getElementById('score').value;
-
+let lastRoll = document.querySelector('.last-score');
 // init diceDOM selector
 const diceTopDOM = document.getElementById('diceTop');
 const diceBottomDOM = document.getElementById('diceBottom');
@@ -30,7 +30,7 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
     // Random Number for both dice
     let diceTop = Math.floor(Math.random() * 6) + 1;
     let diceBottom = Math.floor(Math.random() * 6) + 1;
-    
+    lastRoll.textContent = 'Player ' + (activePlayer + 1) + ' just rolled a ' + diceTop + ' and a ' + diceBottom;
     console.log(diceTop, diceBottom);
     // Display Result for both dice
     diceTopDOM.style.display = 'block';
@@ -38,27 +38,36 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
     diceBottomDOM.style.display = 'block';
     diceBottomDOM.src = 'dice-' + diceBottom + '.png';
     // Update the round score IF the rolled number was NOT 1
-    if ((diceTop !== 1 && diceBottom !== 1) && (prevRollTop !== 6 && prevRollBottom !== 6)) {
+    if ((diceTop !== 1 && diceBottom !== 1) && (diceTop !== 6 && diceBottom !== 6)) {
       //add to current score
       roundScore += diceTop + diceBottom;
       document.querySelector('#current-' + activePlayer).textContent = roundScore;
       //change prevScore to current dice
       prevRollTop = diceTop;
       prevRollBottom = diceBottom;
-      console.log('prevTop: ' + prevRollTop + 'diceTop: ' + diceTop + 'prevBot: ' + prevRollTop + 'diceBot: ' + diceBottom);
-    } else if (prevRollTop === 6 || prevRollBottom === 6) {
+      console.log('first if statement')
+    } else if (diceTop === 6 || diceBottom === 6) {
       // check if dice equals prevRoll
-      if (diceTop === prevRollTop || diceBottom === prevRollBottom) {
+      if (prevRollTop === 6 || prevRollBottom === 6) {
         scores[activePlayer] = 0;
         document.querySelector('#score-' + activePlayer).textContent = 0;
+        console.log('else if if statement')
+        nextPlayer();
+      } else if (diceTop === 1 || diceBottom === 1) {
+        scores[activePlayer] = 0;
+        document.querySelector('#score-' + activePlayer).textContent = 0;
+        console.log('else if else if statement')
         nextPlayer();
       } else {
+        roundScore += diceTop + diceBottom;
+        document.querySelector('#current-' + activePlayer).textContent = roundScore;
         prevRollTop = diceTop;
         prevRollBottom = diceBottom;
-        console.log('prevTop: ' + prevRollTop + 'diceTop: ' + diceTop + 'prevBot: ' + prevRollTop + 'diceBot: ' + diceBottom);
+        console.log('else if else statement')
       }
     } else {
       //Next Player
+      console.log('else statement')
       nextPlayer();
     }
   }

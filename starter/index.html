@@ -11,6 +11,9 @@
 
     <body>
         <div class="wrapper clearfix">
+            <div class="score-show">
+                <h5 class="last-score"></h5>
+            </div>
             <div class="player-0-panel active">
                 <div class="player-name" id="name-0">Player 1</div>
                 <div class="player-score" id="score-0">43</div>
@@ -36,10 +39,11 @@
                 <label for="score">The winning score is: </label>
                 <input type="number" id="score" name="score" placeholder="Select what you want to play to" onChange='winningScore = this.value'>
                 <span tooltip="GAME RULES:
-                1. In each turn, a player rolls a dice as many times as he/she whishes. Each result get added to his/her ROUND score
-                2. BUT, if the player rolls a 1, all his/her ROUND score gets lost. After that, it's the next player's turn
-                3. The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
-                4. The first player to reach 100 points on GLOBAL score wins the game">Rules<i class="ion-help-circled"></i></span>
+                1. In each turn, a player rolls a dice as many times as he/she whishes. Each result get added to his/her ROUND score.
+                2. BUT, if the player rolls a 1, all his/her ROUND score gets lost. After that, it's the next player's turn.
+                3. The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn.
+                4. A player loses their ENTIRE score if they roll two 6's in a row on either die.
+                5. The first player to reach the set points on GLOBAL score wins the game.">Rules<i class="ion-help-circled"></i></span>
             </div>
             
             <img src="dice-5.png" alt="fist dice" class="dice top" id="diceTop">
