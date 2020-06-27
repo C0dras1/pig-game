@@ -15,45 +15,57 @@ GAME RULES:
 */
 
 
-let scores, roundScore, activePlayer, isGameRunning, prevRoll;
+let scores, roundScore, activePlayer, isGameRunning, prevRollTop, prevRollBottom;
 const players = [0, 1];
 let winningScore = document.getElementById('score').value;
 
 // init diceDOM selector
-const diceDOM = document.querySelector('.dice');
+const diceTopDOM = document.getElementById('diceTop');
+const diceBottomDOM = document.getElementById('diceBottom');
 // reset the game
 init();
 // HANDLE DICE ROLL LOGIC
 document.querySelector('.btn-roll').addEventListener('click', function() {
   if (isGameRunning) {
-    // Random Number
-    let dice = Math.floor(Math.random() * 6) + 1;
-
-    // Display Result
-    diceDOM.style.display = 'block';
-    diceDOM.src = 'dice-' + dice + '.png';
+    // Random Number for both dice
+    // let diceTop = Math.floor(Math.random() * 6) + 1;
+    // let diceBottom = Math.floor(Math.random() * 6) + 1;
+    let diceTop = 1;
+    let diceBottom = 6;
+    console.log(diceTop, diceBottom);
+    // Display Result for both dice
+    diceTopDOM.style.display = 'block';
+    diceTopDOM.src = 'dice-' + diceTop + '.png';
+    diceBottomDOM.style.display = 'block';
+    diceBottomDOM.src = 'dice-' + diceBottom + '.png';
     // Update the round score IF the rolled number was NOT 1
-    if (dice !== 1 && prevRoll !== 6) {
+
+    if (prevRollTop === 6 || prevRollBottom === 6) {
+      // check if dice equals prevRoll
+      if (diceTop === prevRollTop || diceBottom === prevRollBottom) {
+        scores[activePlayer] = 0;
+        document.querySelector('#score-' + activePlayer).textContent = 0;
+        nextPlayer();
+      } else {
+        prevRollTop = diceTop;
+        prevRollBottom = diceBottom;
+        console.log('prevTop: ' + prevRollTop + 'diceTop: ' + diceTop + 'prevBot: ' + prevRollTop + 'diceBot: ' + diceBottom);
+      }
+    } else if (diceTop !== 1 && diceBottom !== 1) {
       //add to current score
-      roundScore += dice;
+      roundScore += diceTop + diceBottom;
       document.querySelector('#current-' + activePlayer).textContent = roundScore;
       //change prevScore to current dice
-      prevRoll = dice;
-    } else if (prevRoll === 6) {
-        // check if dice equals prevRoll
-        if (dice === prevRoll) {
-          scores[activePlayer] = 0;
-          document.querySelector('#score-' + activePlayer).textContent = 0;
-          nextPlayer();
-        } else {
-          prevRoll = dice;
-        }
+      prevRollTop = diceTop;
+      prevRollBottom = diceBottom;
+      console.log('prevTop: ' + prevRollTop + 'diceTop: ' + diceTop + 'prevBot: ' + prevRollTop + 'diceBot: ' + diceBottom);
     } else {
       //Next Player
       nextPlayer();
     }
   }
 });
+
 
 // HANDLE HOLD LOGIC
 document.querySelector('.btn-hold').addEventListener('click', function() {
@@ -65,7 +77,8 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
     // Check if player won the game!
     if (scores[activePlayer] >= winningScore) {
       // player won the game
-      diceDOM.style.display = "none";
+      diceTopDOM.style.display = "none";
+      diceBottomDOM.style.display = "none";
       document.querySelector('#name-' + activePlayer).textContent = "Winner!";
       document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
       document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
@@ -82,7 +95,8 @@ function nextPlayer() {
   //Next Player
   activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
   //delete prevRoll 
-  prevRoll = 0;
+  prevRollTop = 0;
+  prevRollBottom = 0;
   //delete current score (not global score)
   roundScore = 0;
   document.getElementById('current-0').textContent = '0';
@@ -91,7 +105,8 @@ function nextPlayer() {
   document.querySelector('.player-0-panel').classList.toggle('active');
   document.querySelector('.player-1-panel').classList.toggle('active');
   //Hide dice when switching players
-  diceDOM.style.display = 'none';
+  diceTopDOM.style.display = 'none';
+  diceBottomDOM.style.display = "none";
 }
 //HANDLE NEW GAME LOGIC
 document.querySelector('.btn-new').addEventListener('click', init);
@@ -101,7 +116,8 @@ function init() {
   roundScore = 0;
   activePlayer = 0;
   isGameRunning = true;
-  prevRoll = 0;
+  prevRollTop = 0;
+  prevRollBottom = 0;
 
   for (let i = 0; i < players.length; i++) {
     document.getElementById('score-' + players[i]).textContent = '0';
@@ -113,5 +129,6 @@ function init() {
   //add active class again to player 0
   document.querySelector('.player-0-panel').classList.add('active');
 
-  diceDOM.style.display = 'none';
+  diceTopDOM.style.display = 'none';
+  diceBottomDOM.style.display = "none";
 }
