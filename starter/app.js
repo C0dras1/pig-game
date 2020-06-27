@@ -10,7 +10,7 @@ GAME RULES:
 */
 
 /*NEW FEATURES 
-2. Add an input field to the HTML where players can set what the winning score will be. (HINT: you can read that value with the .value property in js.)
+
 3. Add another dice to the game, so that there are two dices now. The player looses his current score when one of them is 1. (HINT: you will need CSS to position the second dice, so take a look at the CSS code for the first one.)
 */
 
@@ -106,7 +106,7 @@ function init() {
   for (let i = 0; i < players.length; i++) {
     document.getElementById('score-' + players[i]).textContent = '0';
     document.getElementById('current-' + players[i]).textContent = '0';
-    document.getElementById('name-' + players[i]).textContent = 'Player ' + players[i];
+    document.getElementById('name-' + players[i]).textContent = 'Player ' + (players[i] + 1);
     document.querySelector('.player-' + players[i] + '-panel').classList.remove('winner');
     document.querySelector('.player-' + players[i] + '-panel').classList.remove('active');
   }
