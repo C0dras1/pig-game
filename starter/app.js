@@ -125,6 +125,7 @@ function init() {
   isGameRunning = true;
   prevRollTop = 0;
   prevRollBottom = 0;
+  lastRoll.textContent = '';
 
   for (let i = 0; i < players.length; i++) {
     document.getElementById('score-' + players[i]).textContent = '0';
